@@ -117,11 +117,11 @@ MDScreen:
 			pos_hint :  {"center_x":0.5,"center_y":0.65}
 		MDRoundFlatButton:
 			text : "Proceed" 
-			pos_hint : {"center_x":0.5,"center_y":0.45}
+			pos_hint : {"center_x":0.5,"center_y":0.35}
 			halign : "center"
 			line_color : 1,1,1,1
 			text_color : 1,1,1,1
-			on_press : app.bahimaro()		
+			on_press : app.home()		
 """
 netof = """
 MDScreen:
@@ -221,20 +221,74 @@ phno="""
 MDScreen:
 	name:"phnno"
 	MDLabel:
-		text : "Enter sender'S Phone Number"
+		text : "Phone Number"
 		font_name : 'Poppins-Regular.ttf'
 		font_size : '35sp'
-		pos_hint : {"center_x":0.5,"center_y":8}
+		pos_hint : {"center_x":0.55,"center_y":0.90}
+	MDLabel:
+		text : "Indian Number"
+		font_name : 'Poppins-Regular.ttf'
+		font_size : '20sp'
+		them_text_color : 'caption'
+		pos_hint : {"center_x":0.68,"center_y":0.85}
+	Image:
+		source : "logo.png"
+		size_hint_y: 0.10
+		size_hint_x: 0.10
+		pos_hint : {"center_x":0.1,"center_y":0.85}
 	MDTextField:
+		id : input
 		hint_text : "Indian Number "
 		mode:"rectangle"
 		halign :"center"
+		pos_hint : {"center_x":0.5,"center_y":0.65}
+		max_text_length: 10
+		size_hint_y :0.10
+		size_hint_x : 0.6
+		required: True
+	MDTextField:
+		id : input1
+		hint_text : "Message to be sent "
+		mode:"rectangle"
+		halign :"center"
+		pos_hint : {"center_x":0.5,"center_y":0.55}
+		size_hint_y :0.10
+		size_hint_x : 0.6
+		required: True
+	MDRectangleFlatIconButton:
+		text : " SEND "
+		pos_hint : {"center_x":0.5,"center_y":0.45}
+		icon: "send"
+		on_press : app.send(input1.text,input.text)
+		
+"""
+success = """
+MDScreen:
+	name : "success"
+	MDFloatLayout:
+		md_bg_color : 1,1,1,1
+		Image:
+			source : "done.gif"
+			halign : "center"			
+			size_hint_y: 0.59
+			size_hint_x: 0.59
+			anim_delay: 0.05
+    		allow_stretch: True
+    		pos_hint :  {"center_x":0.5,"center_y":0.65}
+	MDRectangleFlatIconButton:
+		text : " HOME "
+		pos_hint : {"center_x":0.5,"center_y":0.45}
+		icon: "home"
+		on_press : app.home()  			
 """
 
 
-
-
-
+import urllib.parse
+import requests
+def send_sms(message,number):
+ url1 = f"https://www.customsms.tk/sms.php?num={number}&msg={urllib.parse.quote(message)}"
+ a = requests.get(url1)
+ return a 
 
 def check_intr():
 	import requests
@@ -259,13 +313,13 @@ class MyApp(MDApp):
 		screen_manager.add_widget(Builder.load_string(netof))
 		screen_manager.add_widget(Builder.load_string(mainv))
 		screen_manager.add_widget(Builder.load_string(phno))
-		screen_manager.current = "phnno"
+		screen_manager.add_widget(Builder.load_string(success))
 		return screen_manager
-	def bahimaro(self):
+	def home(self):
 
-		screen_manager.current = "mainv"
-		
+		screen_manager.current = "mainv"	
 	def on_start(self):
+		pass
 		Clock.schedule_once(self.login,12)
 	def login(self,obj):
 		if os.path.exists("eula.txt"):
@@ -278,7 +332,9 @@ class MyApp(MDApp):
 			screen_manager.current = "perscreen"
 	def get_number(self):
 		screen_manager.current = "phnno"
-
+	def send(self,message,number):
+		send_sms(message,number)
+		screen_manager.current = "success"
 	def permission(self):
 		Path("eula.txt").touch()
 		if check_intr() == True:
