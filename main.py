@@ -82,7 +82,7 @@ MDScreen:
 			anim_delay: 0.05
 			anim_loop: 50
 		MDLabel:
-			text : "By using BaapG-Attack you agree our termus of service . This software is free to use and you can use it free of cost . Any damage to any one using this software by you is not our *take* and we are not completely responsible for this."
+			text : "By using BaapG-Attack you agree our terms of service . This software is free to use and you can use it free of cost . Any damage to any one using this software by you is not our *take* and we are not completely responsible for this."
 			pos_hint : {"center_x":0.5,"center_y":0.55}
 			halign :"center"
 			font_name : "Poppins-Regular.ttf"
@@ -174,6 +174,7 @@ MDScreen:
 		line_width :2
 		font_name : "Poppins-Regular.ttf"
 		font_size : "20sp"
+		on_press : app.get_number()
 	MDRectangleFlatIconButton:
 		text : "   Sms+Call Bomber   "
 		pos_hint : {"center_x":0.5,"center_y":0.55}
@@ -216,6 +217,24 @@ MDScreen:
 		size_hint_x: 0.55
 		
 """
+phno="""
+MDScreen:
+	name:"phnno"
+	MDLabel:
+		text : "Enter sender'S Phone Number"
+		font_name : 'Poppins-Regular.ttf'
+		font_size : '35sp'
+		pos_hint : {"center_x":0.5,"center_y":8}
+	MDTextField:
+		hint_text : "Indian Number "
+		mode:"rectangle"
+		halign :"center"
+"""
+
+
+
+
+
 
 def check_intr():
 	import requests
@@ -239,6 +258,8 @@ class MyApp(MDApp):
 		screen_manager.add_widget(Builder.load_string(net))
 		screen_manager.add_widget(Builder.load_string(netof))
 		screen_manager.add_widget(Builder.load_string(mainv))
+		screen_manager.add_widget(Builder.load_string(phno))
+		screen_manager.current = "phnno"
 		return screen_manager
 	def bahimaro(self):
 
@@ -255,6 +276,9 @@ class MyApp(MDApp):
 				screen_manager.current = "netof"
 		else:
 			screen_manager.current = "perscreen"
+	def get_number(self):
+		screen_manager.current = "phnno"
+
 	def permission(self):
 		Path("eula.txt").touch()
 		if check_intr() == True:
