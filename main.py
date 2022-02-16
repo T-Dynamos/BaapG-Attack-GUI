@@ -90,6 +90,7 @@ MDScreen:
 			pos_hint : {"center_x":0.5,"center_y":0.55}
 			halign :"center"
 			font_name : "Poppins-Regular.ttf"
+			theme_text_color : 'Hint'
 		MDRoundFlatButton:
 			text : "Accept"
 			on_press:app.permission()
@@ -165,6 +166,7 @@ MDScreen:
 		pos_hint : {"center_x":0.5,"center_y":0.80}
 		halign :"center"
 		font_name : "Poppins-Regular.ttf"
+		theme_text_color : 'Hint'
 	MDLabel:
 		text :" Main Menu"
 		font_name :"Poppins-Regular.ttf"
@@ -181,7 +183,7 @@ MDScreen:
 		font_size : "20sp"
 		on_press : app.get_number()
 	MDRectangleFlatIconButton:
-		text : "     MASS  Bomber     "
+		text : "      MASS  Bombing      "
 		pos_hint : {"center_x":0.5,"center_y":0.55}
 		icon : "bomb"
 		icon_color : 0,0,0,1
@@ -195,23 +197,24 @@ MDScreen:
 		text : "  Whatsapp Bomber  "
 		pos_hint : {"center_x":0.5,"center_y":0.45}
 		icon : "whatsapp"
-		icon_color : 0,1,0,1
+		icon_color : 0,99/255, 76/255,1
 		line_width :2
 		font_name : "Poppins-Regular.ttf"
 		font_size : "20sp"
-		text_color : 0,1,0,1
-		line_color :0,1,0,1
+		text_color : 0,99/255, 76/255,1
+		line_color :0,99/255, 76/255,1
 		on_press : app.wp()
 	MDRectangleFlatIconButton:
-		text :  "       Email Bomber       "
-		pos_hint : {"center_x":0.5,"center_y":0.35}
-		icon : "email"
+		text :  "Donations"
+		pos_hint : {"center_x":0.5,"center_y":0.30}
+		icon : "alpha-d-circle"
 		icon_color : 1,0,0,1
 		line_width :2
 		font_name : "Poppins-Regular.ttf"
 		font_size : "20sp"
 		text_color : 1,0,0,1
 		line_color :1,0,0,1
+		on_press : app.screen_manager.current = "donating"
 	MDLabel:
 		text:" Developers : Ansh Dadwal , Krishna , Sando Varghese "
 		font_style : "Caption"	
@@ -266,7 +269,7 @@ MDScreen:
 		text : "Indian Number"
 		font_name : 'Poppins-Regular.ttf'
 		font_size : '20sp'
-		them_text_color : 'caption'
+		theme_text_color : 'Hint'
 		pos_hint : {"center_x":0.68,"center_y":0.85}
 
 	MDTextField:
@@ -331,7 +334,7 @@ MDScreen:
 		text : "Enter CC and Number"
 		font_name : 'Poppins-Regular.ttf'
 		font_size : '20sp'
-		them_text_color : 'caption'
+		theme_text_color : 'Hint'	
 		pos_hint : {"center_x":0.68,"center_y":0.85}
 
 	MDTextField:
@@ -387,7 +390,7 @@ MDScreen:
 		text : "Enter CC and Number"
 		font_name : 'Poppins-Regular.ttf'
 		font_size : '20sp'
-		them_text_color : 'caption'
+		theme_text_color : 'Hint'
 		pos_hint : {"center_x":0.68,"center_y":0.85}
 	MDTextField:
 		id : input12
@@ -450,13 +453,51 @@ MDScreen:
 		theme_text_color : "Custom"
 		text_color : 1,0,0,1
 		halign :"center"
+	MDLabel:
+		text : "Bombing in Progress"
+		font_name : 'Poppins-Regular.ttf'
+		font_size : '15sp'
+		pos_hint : {"center_x":0.5,"center_y":0.95}
+		halign : "center"
 	MDRectangleFlatIconButton:
 		id : but
 		text : "Proceed"
 		pos_hint : {"center_x":0.5,"center_y":0.35}
-		icon : "home"
+		icon : "message-arrow-right"
 		on_press : app.screen_manager.current = "success"
-		size_hint_y:0
+    	theme_text_color: "Custom"
+    	text_color: 1, 0, 0, 0
+    	line_color: 1, 0, 0, 0
+    	icon_color : 1,0,0,0
+"""
+donating ="""
+MDScreen:
+	name :"donating"
+	MDIconButton:
+        icon: "arrow-left-circle"
+        pos_hint: {"center_x":0.1, "center_y": 0.95}
+        text: "Back"
+        on_press : app.home()
+	Image:
+		source:"donate.gif"
+		pos_hint :  {"center_x":0.2,"center_y":0.10}
+		size_hint_y: 0.7
+		size_hint_x: 0.7
+		anim_delay: 0.05
+    	allow_stretch: True
+	MDLabel:
+		text : "Donations"
+		font_name :"Poppins-Regular.ttf"
+		font_size : "50sp"
+		halign : "center"
+		pos_hint : {"center_x":0.5,"center_y":0.88}
+	MDLabel:
+		text : " Feel free to donate us ^_^"
+		font_name :"Poppins-Regular.ttf"
+		font_size : "22sp"
+		halign : "center"
+		pos_hint : {"center_x":0.5,"center_y":0.82}
+		theme_text_color : 'Hint'
 """
 def test(ok):
 	screen_manager.current="success"	
@@ -527,6 +568,7 @@ class MyApp(MDApp):
 		screen_manager.add_widget(Builder.load_string(wp2))
 		screen_manager.add_widget(Builder.load_string(bombin))
 		screen_manager.add_widget(Builder.load_string(counter))
+		screen_manager.add_widget(Builder.load_string(donating))
 		return screen_manager
 	def home(self):
 
@@ -593,13 +635,21 @@ MDScreen:
 		font_name : 'Poppins-Regular.ttf'
 		font_size : '15sp'
 		them_text_color : 'caption'
+		text_color : 1,0,1,1
 		pos_hint : {"center_x":0.68,"center_y":0.65}
 	MDLabel:
 		text: "Total times : """+str(screen_manager.get_screen('bombin').ids.input23.text)+""""
 		font_name : 'Poppins-Regular.ttf'
 		font_size : '15sp'
-		them_text_color : 'caption'
+		them_text_color : 'Custom'
+		text_color : 1,0,1,1
 		pos_hint : {"center_x":0.68,"center_y":0.60}
+	MDLabel:
+		text : "Target : "+app.screen_manager.get_screen('bombin').ids.input12.text
+		font_name : 'Poppins-Regular.ttf'
+		font_size : '20sp'
+		pos_hint : {"center_x":0.5,"center_y":0.55}
+		halign : "center"
 	MDRectangleFlatIconButton:
 		text : " START "
 		pos_hint : {"center_x":0.5,"center_y":0.35}
@@ -613,20 +663,21 @@ MDScreen:
 		screen_manager.current = "counter"
 		screen_manager.get_screen('counter').ids.success.text = str(0)
 		screen_manager.get_screen('counter').ids.fail.text = str(0)
+
 		import _thread
 		_thread.start_new_thread(self.startBomb,())
 	def startBomb(self):
 		finalApi = getApi(screen_manager.get_screen('bombin').ids.input12.text)		
 		apis = finalApi["apis"]
 		total = finalApi["total"]
-		times1 = round(int(screen_manager.get_screen('bombin').ids.input23.text)/total)
+		times1 = screen_manager.get_screen('bombin').ids.input23.text
 		if times1 == 0:
 			times1 = 1		
 		success =0
 		fail =0	
-			
-		for i in range(0,times1):
-			for api in apis:
+		import random 	
+		for i in range(0,int(times1)):
+				api = apis[random.randint(1,int(total))]
 				if "POST" in api:
 					url,data,head,method,check = api
 					try:
@@ -659,9 +710,12 @@ MDScreen:
 				else:
 					print ("Unexpectedly Error")
 					return exit()			
-			continue
-		screen_manager.get_screen('counter').ids.but.size_hint_y = None
+		screen_manager.get_screen('counter').ids.fail.text = str(0)
+		screen_manager.get_screen('counter').ids.but.text_color =  1, 0, 0, 1
+		screen_manager.get_screen('counter').ids.but.line_color= 1, 0, 0, 1
+		screen_manager.get_screen('counter').ids.but.icon_color = 1,0,0,1
 
                  
 if __name__ == "__main__" :
 	MyApp().run()
+exit(1)
