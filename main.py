@@ -498,6 +498,40 @@ MDScreen:
 		halign : "center"
 		pos_hint : {"center_x":0.5,"center_y":0.82}
 		theme_text_color : 'Hint'
+	Image:
+		source : "td.png"
+		pos_hint :  {"center_x":0.2,"center_y":0.67}
+		size_hint_y: 0.3
+		size_hint_x: 0.3
+    	allow_stretch: True
+	MDLabel:
+		text : "TDynamos@Linux"
+		font_name :"Poppins-Regular.ttf"
+		font_size : "22sp"
+		halign : "center"
+		pos_hint : {"center_x":0.65,"center_y":0.67}
+		theme_text_color : 'Primary'
+	MDLabel:
+		text : "UPI-ID : anshdadwal@apl"
+		font_name :"Poppins-Regular.ttf"
+		font_size : "15sp"
+		halign : "center"
+		pos_hint : {"center_x":0.5,"center_y":0.56}
+		font_style : 'Overline'
+	MDLabel:
+		text : "EMAIL : anshdadwal298@gmail.com"
+		font_name :"Poppins-Regular.ttf"
+		font_size : "15sp"
+		halign : "center"
+		pos_hint : {"center_x":0.5,"center_y":0.52}
+		font_style : 'Overline'
+	MDLabel:
+		text : "Instagram : t_dynamos"
+		font_name :"Poppins-Regular.ttf"
+		font_size : "15sp"
+		halign : "center"
+		pos_hint : {"center_x":0.5,"center_y":0.48}
+		font_style : 'Overline'
 """
 def test(ok):
 	screen_manager.current="success"	
@@ -718,4 +752,3 @@ MDScreen:
                  
 if __name__ == "__main__" :
 	MyApp().run()
-exit(1)
