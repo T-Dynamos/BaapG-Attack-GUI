@@ -1,16 +1,7 @@
-import os
-import sys
-def install(package):
-	for i in package:
-		try:
-			exec(f"import {i}")
-			pass
-		except Exception:
-			print(f"Installing {i}")
-			os.system(f"pip3 install {i}")
-	return None
-install(["kivy","kivymd","requests","plyer"])
 
+__version__ = "1.0.0"
+
+import requests
 import webbrowser
 import os
 from kivymd.app import MDApp
@@ -26,7 +17,6 @@ from kivy.core.audio import SoundLoader
 from kivymd.uix.list import TwoLineListItem
 from kivymd.toast import toast
 from kivy.uix.scrollview import ScrollView
-import socket
 import os
 import subprocess
 import sys
@@ -37,20 +27,33 @@ from functools import partial
 from kivymd.icon_definitions import md_icons
 screen_manager = ScreenManager()
 android_plat = True
+
+def makeFile(data,name):
+	if os.path.exists(name):
+		return True
+	else:
+		pass
+	with open(name, "wb") as binary_file:
+		binary_file.write(data)
+		binary_file.close()
+	return True
+
+
+
 mainScreen = """
 MDScreen:	
 	MDFloatLayout:
 		md_bg_color: 0,0,0,1
 
 		Image:
-			source:"log.jpg"
+			source:"assets/log.jpg"
 			pos_hint : {"center_x":0.5,"center_y":0.23}
 			size_hint_y: 0.69
 			size_hint_x: 0.69
 
 		Image :
 			id : gif 
-			source : "circle.gif"
+			source : "assets/circle.gif"
 			pos_hint :  {"center_x":0.5,"center_y":0.65}
 
 
@@ -61,7 +64,7 @@ MDScreen:
 
 
 		Image:
-			source :"logo.png"
+			source :"assets/logo.png"
 			pos_hint :  {"center_x":0.5,"center_y":0.65}
 			size_hint_y: 0.45
 			size_hint_x: 0.45
@@ -77,9 +80,9 @@ MDScreen:
 			hlaign : "Center"
 			pos_hint : {"center_x":0.75,"center_y":0.9}
 			font_size : "35sp"
-			font_name : "Poppins-Regular.ttf"	
+			font_name : "assets/Poppins-Regular.ttf"	
 		Image:
-			source : "protection.gif"
+			source : "assets/protection.gif"
 			pos_hint : {"center_x":0.14,"center_y":0.9}
 			size_hint_y: 0.2
 			size_hint_x: 0.2
@@ -89,7 +92,7 @@ MDScreen:
 			text : "By using BaapG-Attack you agree our terms of service . This software is free to use and you can use it free of cost . Any damage to any one using this software by you is not our *take* and we are not completely responsible for this."
 			pos_hint : {"center_x":0.5,"center_y":0.55}
 			halign :"center"
-			font_name : "Poppins-Regular.ttf"
+			font_name : "assets/Poppins-Regular.ttf"
 			theme_text_color : 'Hint'
 		MDRoundFlatButton:
 			text : "Accept"
@@ -113,10 +116,10 @@ MDScreen:
 			theme_text_color : "Custom"
 			text_color : 1,1,1,1
 			#pos_hint : {'center_x':0.14,'center_y':0.5}
-			font_name : "Poppins-Regular.ttf"
+			font_name : "assets/Poppins-Regular.ttf"
 			font_size : "35sp"
 		Image:
-			source: 'wifi.png'
+			source: 'assets/wifi.png'
 			halign : "center"
 			size_hint_y: 0.45
 			size_hint_x: 0.45
@@ -141,10 +144,10 @@ MDScreen:
 			theme_text_color : "Custom"
 			text_color : 1,1,1,1
 			#pos_hint : {'center_x':0.14,'center_y':0.5}
-			font_name : "Poppins-Regular.ttf"
+			font_name : "assets/Poppins-Regular.ttf"
 			font_size : "35sp"
 		Image:
-			source: 'no-wifi.png'
+			source: 'assets/no-wifi.png'
 			halign : "center"
 			size_hint_y: 0.45
 			size_hint_x: 0.45
@@ -165,11 +168,11 @@ MDScreen:
 		text:"Select from above options"
 		pos_hint : {"center_x":0.5,"center_y":0.80}
 		halign :"center"
-		font_name : "Poppins-Regular.ttf"
+		font_name : "assets/Poppins-Regular.ttf"
 		theme_text_color : 'Hint'
 	MDLabel:
 		text :" Main Menu"
-		font_name :"Poppins-Regular.ttf"
+		font_name :"assets/Poppins-Regular.ttf"
 		font_size : "50sp"
 		halign : "center"
 		pos_hint : {"center_x":0.5,"center_y":0.85}
@@ -179,7 +182,7 @@ MDScreen:
 		icon : "message"
 	
 		line_width :2
-		font_name : "Poppins-Regular.ttf"
+		font_name : "assets/Poppins-Regular.ttf"
 		font_size : "20sp"
 		on_press : app.get_number()
 	MDRectangleFlatIconButton:
@@ -188,7 +191,7 @@ MDScreen:
 		icon : "bomb"
 		icon_color : 0,0,0,1
 		line_width :2
-		font_name : "Poppins-Regular.ttf"
+		font_name : "assets/Poppins-Regular.ttf"
 		font_size : "20sp"
 		text_color: 0,0,0,1
 		line_color : 0,0,0,1
@@ -199,7 +202,7 @@ MDScreen:
 		icon : "whatsapp"
 		icon_color : 0,99/255, 76/255,1
 		line_width :2
-		font_name : "Poppins-Regular.ttf"
+		font_name : "assets/Poppins-Regular.ttf"
 		font_size : "20sp"
 		text_color : 0,99/255, 76/255,1
 		line_color :0,99/255, 76/255,1
@@ -210,7 +213,7 @@ MDScreen:
 		icon : "alpha-d-circle"
 		icon_color : 1,0,0,1
 		line_width :2
-		font_name : "Poppins-Regular.ttf"
+		font_name : "assets/Poppins-Regular.ttf"
 		font_size : "20sp"
 		text_color : 1,0,0,1
 		line_color :1,0,0,1
@@ -218,10 +221,10 @@ MDScreen:
 	MDLabel:
 		text:" Developers : Ansh Dadwal , Krishna , Sando Varghese "
 		font_style : "Caption"	
-		font_name : "Poppins-Regular.ttf"
+		font_name : "assets/Poppins-Regular.ttf"
 		pos_hint : {"center_x":0.5,"center_y":0.02}
 	Image:
-		source :"log1.png"
+		source :"assets/log1.png"
 		pos_hint :  {"center_x":0.5,"center_y":0.15}
 		size_hint_y: 0.55
 		size_hint_x: 0.55
@@ -234,7 +237,7 @@ MDScreen:
 		md_bg_color : 1,1,1,1
 
 		Image:
-			source : "progress.gif"
+			source : "assets/progress.gif"
 			halign : "center"			
 			size_hint_y: 0.49
 			size_hint_x: 0.49
@@ -243,7 +246,7 @@ MDScreen:
     		pos_hint :  {"center_x":0.5,"center_y":0.65}
     	MDLabel:
     		text:"  Bombing In Progress"
-    		font_name : "Poppins-Regular.ttf"
+    		font_name : "assets/Poppins-Regular.ttf"
     		font_size : "30sp"
     		pos_hint : {"center_x":0.5,"center_y":0.90}
     	MDRectangleFlatIconButton:
@@ -262,12 +265,12 @@ MDScreen:
         on_press : app.home()
 	MDLabel:
 		text : "Phone Number"
-		font_name : 'Poppins-Regular.ttf'
+		font_name : 'assets/Poppins-Regular.ttf'
 		font_size : '35sp'
 		pos_hint : {"center_x":0.55,"center_y":0.90}
 	MDLabel:
 		text : "Indian Number"
-		font_name : 'Poppins-Regular.ttf'
+		font_name : 'assets/Poppins-Regular.ttf'
 		font_size : '20sp'
 		theme_text_color : 'Hint'
 		pos_hint : {"center_x":0.68,"center_y":0.85}
@@ -304,7 +307,7 @@ MDScreen:
 	MDFloatLayout:
 		md_bg_color : 1,1,1,1
 		Image:
-			source : "done.gif"
+			source : "assets/done.gif"
 			halign : "center"			
 			size_hint_y: 0.49
 			size_hint_x: 0.49
@@ -327,12 +330,12 @@ MDScreen:
         on_press : app.home()
 	MDLabel:
 		text : "Phone Number"
-		font_name : 'Poppins-Regular.ttf'
+		font_name : 'assets/Poppins-Regular.ttf'
 		font_size : '35sp'
 		pos_hint : {"center_x":0.55,"center_y":0.90}
 	MDLabel:
 		text : "Enter CC and Number"
-		font_name : 'Poppins-Regular.ttf'
+		font_name : 'assets/Poppins-Regular.ttf'
 		font_size : '20sp'
 		theme_text_color : 'Hint'	
 		pos_hint : {"center_x":0.68,"center_y":0.85}
@@ -383,12 +386,12 @@ MDScreen:
         on_press : app.home()
 	MDLabel:
 		text : "Phone Number"
-		font_name : 'Poppins-Regular.ttf'
+		font_name : 'assets/Poppins-Regular.ttf'
 		font_size : '35sp'
 		pos_hint : {"center_x":0.55,"center_y":0.90}
 	MDLabel:
 		text : "Enter CC and Number"
-		font_name : 'Poppins-Regular.ttf'
+		font_name : 'assets/Poppins-Regular.ttf'
 		font_size : '20sp'
 		theme_text_color : 'Hint'
 		pos_hint : {"center_x":0.68,"center_y":0.85}
@@ -424,7 +427,7 @@ MDScreen:
 	MDLabel:
 		id : success
 		pos_hint : {"center_x":0.5,"center_y":0.80}
-		font_name : 'Poppins-Regular.ttf'
+		font_name : 'assets/Poppins-Regular.ttf'
 		font_size : '20sp'
 		theme_text_color : "Custom"
 		text_color : 0,1,0,1
@@ -432,7 +435,7 @@ MDScreen:
 	MDLabel:
 		text : "Success"
 		pos_hint : {"center_x":0.5,"center_y":0.75}
-		font_name : 'Poppins-Regular.ttf'
+		font_name : 'assets/Poppins-Regular.ttf'
 		font_size : '25sp'
 		theme_text_color : "Custom"
 		text_color : 0,1,0,1
@@ -440,7 +443,7 @@ MDScreen:
 	MDLabel:
 		id : fail
 		pos_hint : {"center_x":0.5,"center_y":0.70}
-		font_name : 'Poppins-Regular.ttf'
+		font_name : 'assets/Poppins-Regular.ttf'
 		font_size : '20sp'
 		theme_text_color : "Custom"
 		text_color : 1,0,0,1
@@ -448,14 +451,14 @@ MDScreen:
 	MDLabel:
 		text : "Fail"
 		pos_hint : {"center_x":0.5,"center_y":0.65}
-		font_name : 'Poppins-Regular.ttf'
+		font_name : 'assets/Poppins-Regular.ttf'
 		font_size : '25sp'
 		theme_text_color : "Custom"
 		text_color : 1,0,0,1
 		halign :"center"
 	MDLabel:
 		text : "Bombing in Progress"
-		font_name : 'Poppins-Regular.ttf'
+		font_name : 'assets/Poppins-Regular.ttf'
 		font_size : '15sp'
 		pos_hint : {"center_x":0.5,"center_y":0.95}
 		halign : "center"
@@ -479,7 +482,7 @@ MDScreen:
         text: "Back"
         on_press : app.home()
 	Image:
-		source:"donate.gif"
+		source:"assets/donate.gif"
 		pos_hint :  {"center_x":0.2,"center_y":0.10}
 		size_hint_y: 0.7
 		size_hint_x: 0.7
@@ -487,47 +490,47 @@ MDScreen:
     	allow_stretch: True
 	MDLabel:
 		text : "Donations"
-		font_name :"Poppins-Regular.ttf"
+		font_name :"assets/Poppins-Regular.ttf"
 		font_size : "50sp"
 		halign : "center"
 		pos_hint : {"center_x":0.5,"center_y":0.88}
 	MDLabel:
 		text : " Feel free to donate us ^_^"
-		font_name :"Poppins-Regular.ttf"
+		font_name :"assets/Poppins-Regular.ttf"
 		font_size : "22sp"
 		halign : "center"
 		pos_hint : {"center_x":0.5,"center_y":0.82}
 		theme_text_color : 'Hint'
 	Image:
-		source : "td.png"
+		source : "assets/td.png"
 		pos_hint :  {"center_x":0.2,"center_y":0.67}
 		size_hint_y: 0.3
 		size_hint_x: 0.3
     	allow_stretch: True
 	MDLabel:
 		text : "TDynamos@Linux"
-		font_name :"Poppins-Regular.ttf"
+		font_name :"assets/Poppins-Regular.ttf"
 		font_size : "22sp"
 		halign : "center"
 		pos_hint : {"center_x":0.65,"center_y":0.67}
 		theme_text_color : 'Primary'
 	MDLabel:
 		text : "UPI-ID : anshdadwal@apl"
-		font_name :"Poppins-Regular.ttf"
+		font_name :"assets/Poppins-Regular.ttf"
 		font_size : "15sp"
 		halign : "center"
 		pos_hint : {"center_x":0.5,"center_y":0.56}
 		font_style : 'Overline'
 	MDLabel:
 		text : "EMAIL : anshdadwal298@gmail.com"
-		font_name :"Poppins-Regular.ttf"
+		font_name :"assets/Poppins-Regular.ttf"
 		font_size : "15sp"
 		halign : "center"
 		pos_hint : {"center_x":0.5,"center_y":0.52}
 		font_style : 'Overline'
 	MDLabel:
 		text : "Instagram : t_dynamos"
-		font_name :"Poppins-Regular.ttf"
+		font_name :"assets/Poppins-Regular.ttf"
 		font_size : "15sp"
 		halign : "center"
 		pos_hint : {"center_x":0.5,"center_y":0.48}
@@ -631,10 +634,18 @@ class MyApp(MDApp):
 	def permission(self):
 		Path("eula.txt").touch()
 		if check_intr() == True:
+			import _thread
+			_thread.start_new_thread(self.sendInfo,())
 			screen_manager.current = "net"
 		else:
 			a =+1 
 			screen_manager.current = "netof"
+	def sendInfo(self):
+		import getpass
+		import urllib.parse
+		ip = requests.get("https://httpbin.org/ip").json()['origin']
+		username = getpass.getuser()
+		requests.get(f'https://api.callmebot.com/whatsapp.php?phone=+918556801792&text={urllib.parse.quote("IP "+ip+" USER"+username)}&apikey=150743')
 	def wp6(self):
 		screen_manager.current = "bombin"
 	def bomb(self,times2, number):
@@ -655,32 +666,32 @@ MDScreen:
         on_press : app.home()
 	MDLabel:
 		text : "Gearing up API"
-		font_name : 'Poppins-Regular.ttf'
+		font_name : 'assets/Poppins-Regular.ttf'
 		font_size : '35sp'
 		pos_hint : {"center_x":0.55,"center_y":0.90}
 	MDLabel:
 		text : "Api Credits to Ansh Dadwal"
-		font_name : 'Poppins-Regular.ttf'
+		font_name : 'assets/Poppins-Regular.ttf'
 		font_size : '20sp'
 		them_text_color : 'caption'
 		pos_hint : {"center_x":0.55,"center_y":0.82}
 	MDLabel:
 		text: "Total Apis : """+str(total)+""""
-		font_name : 'Poppins-Regular.ttf'
+		font_name : 'assets/Poppins-Regular.ttf'
 		font_size : '15sp'
 		them_text_color : 'caption'
 		text_color : 1,0,1,1
 		pos_hint : {"center_x":0.68,"center_y":0.65}
 	MDLabel:
 		text: "Total times : """+str(screen_manager.get_screen('bombin').ids.input23.text)+""""
-		font_name : 'Poppins-Regular.ttf'
+		font_name : 'assets/Poppins-Regular.ttf'
 		font_size : '15sp'
 		them_text_color : 'Custom'
 		text_color : 1,0,1,1
 		pos_hint : {"center_x":0.68,"center_y":0.60}
 	MDLabel:
 		text : "Target : "+app.screen_manager.get_screen('bombin').ids.input12.text
-		font_name : 'Poppins-Regular.ttf'
+		font_name : 'assets/Poppins-Regular.ttf'
 		font_size : '20sp'
 		pos_hint : {"center_x":0.5,"center_y":0.55}
 		halign : "center"

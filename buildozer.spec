@@ -4,39 +4,39 @@
 title = BaapG Attack
 
 # (str) Package name
-package.name = com.baapg.attack
+package.name = baapgattack
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = com.baapg.attack
+package.domain = com.tdynamos
 
 # (str) Source code where the main.py live
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas,gif
+source.include_exts = py
 
 # (list) List of inclusions using pattern matching
-source.include_patterns = /*.png,/*.ttf,/*.jpeg
+source.include_patterns = assets/*.png, assets/*.ttf, assets/*.jpg, assets/*.gif
 
 # (list) Source files to exclude (let empty to not exclude anything)
-#source.exclude_exts = spec
+source.exclude_exts = spec,png
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-#source.exclude_dirs = tests, bin
+source.exclude_dirs =  bin
 
 # (list) List of exclusions using pattern matching
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 1
+#version = 1
 
 # (str) Application versioning (method 2)
-# version.regex = __version__ = ['"](.*)['"]
-# version.filename = %(source.dir)s/main.py
+version.regex = __version__ = ['"](.*)['"]
+version.filename = main.py
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy, kivymd, requests,plyer,webbrowser
+requirements = kivy==2.0.0, kivymd, requests,pillow,charset_normalizer,chardet,idna,urllib3,certifi
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -46,10 +46,10 @@ requirements = python3,kivy, kivymd, requests,plyer,webbrowser
 #garden_requirements =
 
 # (str) Presplash of the application
-#presplash.filename = %(source.dir)s/data/presplash.png
+presplash.filename = logo.png
 
 # (str) Icon of the application
-icon.filename = logo.png
+icon.filename = assets/logo.png
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
@@ -68,7 +68,7 @@ orientation = portrait
 osx.python_version = 3
 
 # Kivy version to use
-osx.kivy_version = 1.9.1
+osx.kivy_version = 2.0.0
 
 #
 # Android specific
@@ -97,7 +97,7 @@ android.api = 27
 #android.sdk = 20
 
 # (str) Android NDK version to use
-android.ndk = 23b
+android.ndk = 19b
 
 # (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
 #android.ndk_api = 21
