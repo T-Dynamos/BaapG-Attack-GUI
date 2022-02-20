@@ -588,6 +588,7 @@ class BaapG_AttackApp(MDApp):
 	screen_manager = screen_manager
 	a = 0	
 	b = f"No internet {a}"
+	self.title = "BaapG Attack"
 	def wp(self):
 		screen_manager.current = "wpbomb"
 	def reload(self):
