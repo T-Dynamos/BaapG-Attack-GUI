@@ -27,9 +27,10 @@ from functools import partial
 from kivymd.icon_definitions import md_icons
 screen_manager = ScreenManager()
 android_plat = True
-
+from kivy.utils import platform
 from kivy.core.window import Window
-Window.size = (1080, 1920)
+if platform != "android":
+	Window.size =(720,1280)
 def makeFile(data,name):
 	if os.path.exists(name):
 		return True
@@ -519,21 +520,21 @@ MDScreen:
 	MDLabel:
 		text : "UPI-ID : anshdadwal@apl"
 		font_name :"assets/Poppins-Regular.ttf"
-		font_size : "15sp"
+		font_size : "20sp"
 		halign : "center"
 		pos_hint : {"center_x":0.5,"center_y":0.56}
 		font_style : 'Overline'
 	MDLabel:
 		text : "EMAIL : anshdadwal298@gmail.com"
 		font_name :"assets/Poppins-Regular.ttf"
-		font_size : "15sp"
+		font_size : "20sp"
 		halign : "center"
 		pos_hint : {"center_x":0.5,"center_y":0.52}
 		font_style : 'Overline'
 	MDLabel:
 		text : "Instagram : t_dynamos"
 		font_name :"assets/Poppins-Regular.ttf"
-		font_size : "15sp"
+		font_size : "20sp"
 		halign : "center"
 		pos_hint : {"center_x":0.5,"center_y":0.48}
 		font_style : 'Overline'
@@ -725,7 +726,7 @@ MDScreen:
 		fail =0	
 		import random 	
 		for i in range(0,int(times1)):
-				api = apis[random.randint(1,int(total))]
+				api = apis[random.randint(1,int(total)-1)]
 				if "POST" in api:
 					url,data,head,method,check = api
 					try:
