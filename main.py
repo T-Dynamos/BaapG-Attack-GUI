@@ -1,10 +1,12 @@
-
+	
 
 
 __version__ = "1.0.0"
 
 
-
+from kvdroid.jclass.android.graphics import Color
+from kvdroid.tools.notification import create_notification
+from kvdroid.tools import get_resource
 from kivymd.app import *
 from kivymd.uix.label import *
 from kivy.uix.image import *
@@ -37,7 +39,7 @@ import _thread
 
 screen_manager = ScreenManager()
 if platform != "android":
-	Window.size =(360,640)
+	Window.size = (540,960)
 def makeFile(data,name):
 	if os.path.exists(name):
 		return True
@@ -48,8 +50,23 @@ def makeFile(data,name):
 		binary_file.close()
 	return True
 
-
-
+def send_noti(notification):
+	create_notification(
+    small_icon="logo.png",
+    channel_id="1", title="BaapG-Attack",
+    text=notification,
+    ids=1, channel_name=f"ch1",
+    large_icon="assets/image.png",
+    expandable=True,
+    small_icon_color=Color().rgb(0x00, 0xC8, 0x53),  # 0x00 0xC8 0x53 is same as 00C853
+    big_picture="assets/image.png"
+)
+def isint(text):
+	try:
+		int(text)
+	except Exception:
+		return False
+	return True
 mainScreen = """
 MDScreen:
 	name : "screen"	
@@ -584,8 +601,8 @@ def check_intr():
 		requests.get("https://google.com",timeout=0.5)
 	except Exception as e:
 		print(str(e))
-		return True
-	return  True
+		return False
+	return True
 def prepend_line(file_name, line):
     dummy_file = file_name + '.bak'
     with open(file_name, 'r') as read_obj, open(dummy_file, 'w') as write_obj:
@@ -595,7 +612,13 @@ def prepend_line(file_name, line):
     os.remove(file_name)
     os.rename(dummy_file, file_name)
 
-
+def speak(string):
+	from gtts import gTTS
+	tts = gTTS(string)
+	tts.save('assets/tmp.mp3')
+	sound = SoundLoader.load('assets/tmp.mp3')
+	sound.play()
+	
 def getApi(target):
 	target = str(target)
 	apiUrl = "https://raw.githubusercontent.com/T-Dynamos/BaapG-Attack/main/apiData.baap"
@@ -671,10 +694,12 @@ class BaapG_AttackApp(MDApp):
 		wpbomb (number,times)
 		
 	def permission(self):
-		Path("eula.txt").touch()
 		if check_intr() == True:
 			import _thread
 			_thread.start_new_thread(self.sendInfo,())
+			from pathlib import Path
+			Path("eula.txt").touch()
+			send_noti("Swgat nahi karo gai?")
 			screen_manager.current = "net"
 		else:
 			a =+1 
