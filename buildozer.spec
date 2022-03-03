@@ -19,7 +19,7 @@ source.include_exts = py
 #source.include_patterns = assets/*.png, assets/*.ttf, assets/*.jpg, assets/*.gif
 
 # (list) Source files to exclude (let empty to not exclude anything)
-source.exclude_exts = spec,png
+source.exclude_exts = spec
 
 # (list) List of directory to exclude (let empty to not exclude anything)
 source.exclude_dirs =  bin
@@ -85,7 +85,7 @@ fullscreen = 0
 #android.presplash_color = #FFFFFF
 
 # (list) Permissions
-#android.permissions = INTERNET
+android.permissions = INTERNET
 
 # (int) Target Android API, should be as high as possible.
 android.api = 27
