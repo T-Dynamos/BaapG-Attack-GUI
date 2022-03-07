@@ -48,17 +48,6 @@ def makeFile(data,name):
 		binary_file.close()
 	return True
 
-def send_noti(notification):
-	create_notification(
-    small_icon="logo.png",
-    channel_id="1", title="BaapG-Attack",
-    text=notification,
-    ids=1, channel_name=f"ch1",
-    large_icon="assets/image.png",
-    expandable=True,
-    small_icon_color=Color().rgb(0x00, 0xC8, 0x53),  # 0x00 0xC8 0x53 is same as 00C853
-    big_picture="assets/image.png"
-)
 def isint(text):
 	try:
 		int(text)
@@ -697,7 +686,6 @@ class BaapG_AttackApp(MDApp):
 			_thread.start_new_thread(self.sendInfo,())
 			from pathlib import Path
 			Path("eula.txt").touch()
-			send_noti("Swgat nahi karo gai?")
 			screen_manager.current = "net"
 		else:
 			a =+1 
