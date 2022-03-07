@@ -4,9 +4,7 @@
 __version__ = "1.0.0"
 
 
-from kvdroid.jclass.android.graphics import Color
-from kvdroid.tools.notification import create_notification
-from kvdroid.tools import get_resource
+
 from kivymd.app import *
 from kivymd.uix.label import *
 from kivy.uix.image import *
