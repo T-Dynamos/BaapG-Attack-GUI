@@ -16,7 +16,7 @@ jobs:
         id: buildozer
         with:
           workdir: .
-          buildozer_version: stable
+          command: sudo apt install "zlib*" -y ; buildozer android release
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
