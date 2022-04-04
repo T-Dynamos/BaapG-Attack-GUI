@@ -88,7 +88,7 @@ fullscreen = 0
 android.permissions = INTERNET
 
 # (int) Target Android API, should be as high as possible.
-android.api = 27
+android.api = 31
 
 # (int) Minimum API your APK will support.
 #android.minapi = 21
@@ -219,7 +219,7 @@ android.ndk = 19b
 #android.copy_libs = 1
 
 # (str) The Android arch to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
-android.arch = x86_64 
+android.arch = armeabi-v7a
 
 # (int) overrides automatic versionCode computation (used in build.gradle)
 # this is not the same as app version and should only be edited if you know what you're doing
